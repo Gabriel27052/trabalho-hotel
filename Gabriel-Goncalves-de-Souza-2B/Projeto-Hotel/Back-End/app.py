@@ -25,6 +25,18 @@ COLUMNS = [
     "Observações",
     "Data Cadastro",
 ]
+
+def init_excel():
+    if not os.path.exists(DB_DIR):
+        os.makedirs(DB_DIR)
+
+    if not os.path.exists(EXCEL_FILE):
+        workbook = openpyxl.Workbook()
+        sheet = workbook.active
+        sheet.title = "Clientes"
+        sheet.append(COLUMNS)
+        workbook.save(EXCEL_FILE)
+        
 app = Flask(__name__, static_folder=STATIC_DIR,static_url_path="/" + STATIC_DIR)
 
 @app.route("/")
@@ -43,5 +55,7 @@ if __name__=="__main__":
     print("BASE_DIR", BASE_DIR)
     print("FRONTEND_DIR", FRONTEND_DIR)
     print("STATIC_DIR", STATIC_DIR)
+    init_excel()
+    app.run(debug=True)
 
 app.run(debug=True)
